@@ -24,8 +24,11 @@ if word[4] == search_letter:
     i = i+1 
 
 if i == 0:
-    i = 'No '
-print(i + " instances of " + search_letter + " found in " + word)
+    print("No instances of " + search_letter + " found in " + word)
+if i == 1:
+    print("1 instance of " + search_letter + " found in " + word)
+else:
+    print(str(i) + " instances of " + search_letter + " found in " + word)
 
     
 
