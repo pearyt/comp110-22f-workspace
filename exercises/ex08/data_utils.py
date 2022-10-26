@@ -4,21 +4,16 @@ __author__ = "730613916"
 
 # Define your functions below
 from csv import DictReader
-from unittest import result
+
 
 def read_csv_rows(filename: str) -> list[dict[str, str]]:
     """Read the rows of a csv into a 'table'."""
     result: list[dict[str, str]] = []
-
-    file_handle = open(filename, "r", encoding = "utf8")
-
+    file_handle = open(filename, "r", encoding="utf8")
     csv_reader = DictReader(file_handle)
-
     for row in csv_reader:
         result.append(row)
-
     file_handle.close()
-
     return result 
 
 
@@ -34,11 +29,9 @@ def column_values(table: list[dict[str, str]], column: str) -> list[str]:
 def columnar(row_table: list[dict[str, str]]) -> dict[str, list[str]]:
     """Transform a row-oriented table to a column-oriented table."""
     result: dict[str, list[str]] = {}
-
     first_row: dict[str, str] = row_table[0]
     for column in first_row:
         result[column] = column_values(row_table, column)
-
     return result
 
 
@@ -47,32 +40,33 @@ def head(table: dict[str, list[str]], rows: int) -> dict[str, list[str]]:
     result: dict[str, list[str]] = {}
     for row in table:
         N_list: list[str] = []
+        if rows > len(table[row]):
+            rows = len(table[row])
         for i in range(rows):
             item: str = table[row][i]
             N_list.append(item)
         result[row] = N_list
-
     return result
 
 
 def select(row_table: dict[str, list[str]], choice: list[str]) -> dict[str, list[str]]:
     """Select only the wanted columns from the input."""
     result: dict[str, list[str]] = {}
-    for choice in row_table:
-        result[choice] = row_table[choice]
+    for column in choice:
+        result[column] = row_table[column]
     return result
 
 
-def concat(table_1: dict[str, list[str]] , table_2: dict[str, list[str]]) -> dict[str, list[str]]:
+def concat(table_1: dict[str, list[str]], table_2: dict[str, list[str]]) -> dict[str, list[str]]:
     """Join together two separate tables of data."""
     result: dict[str, list[str]] = {}
     for column in table_1:
         result[column] = table_1[column]
     for column_1 in table_2:
         if column_1 in result:
-            item: list[str] = table_2[column_1]
-            result[column_1] = result[column] + item
-        result[column_1] = table_2[column_1]
+            result[column_1] = table_1[column_1] + table_2[column_1]
+        else:
+            result[column_1] = table_2[column_1]
     return result
 
 
